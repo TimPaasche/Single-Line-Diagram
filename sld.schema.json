@@ -1,0 +1,2600 @@
+{
+  "$defs": {
+    "Battery": {
+      "additionalProperties": false,
+      "description": "Batteriespeicher, AC- oder DC-gekoppelt, optional mit integriertem Batteriewechselrichter.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kwh": {
+          "description": "Nutzbare Kapazität in kWh",
+          "exclusiveMinimum": 0,
+          "title": "Kwh",
+          "type": "number"
+        },
+        "kw": {
+          "description": "Lade-/Entladeleistung in kW",
+          "exclusiveMinimum": 0,
+          "title": "Kw",
+          "type": "number"
+        },
+        "coupling": {
+          "default": "ac",
+          "description": "Kopplung: ac | dc",
+          "enum": [
+            "ac",
+            "dc"
+          ],
+          "title": "Coupling",
+          "type": "string"
+        },
+        "inverter_kva": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Integrierter Batteriewechselrichter in kVA (wird mitgezeichnet)",
+          "title": "Inverter Kva"
+        },
+        "type": {
+          "const": "battery",
+          "default": "battery",
+          "description": "Komponententyp (Batteriespeicher)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kwh",
+        "kw"
+      ],
+      "title": "Battery",
+      "type": "object"
+    },
+    "Busbar": {
+      "additionalProperties": false,
+      "description": "Sammelschiene einer Spannungsebene (waagerecht, Abgänge senkrecht).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "voltage_kv": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Nennspannung in kV (sonst aus Nachbarn abgeleitet)",
+          "title": "Voltage Kv"
+        },
+        "type": {
+          "const": "busbar",
+          "default": "busbar",
+          "description": "Komponententyp (Sammelschiene)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Busbar",
+      "type": "object"
+    },
+    "Cable": {
+      "additionalProperties": false,
+      "description": "Kabel (Leitung mit Mantelkennzeichnung).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "length_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Länge in m",
+          "title": "Length M"
+        },
+        "cross_section_mm2": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Leiterquerschnitt in mm²",
+          "title": "Cross Section Mm2"
+        },
+        "conductors": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Aderzahl-Präfix, z. B. '3×1×' oder '4×'",
+          "title": "Conductors"
+        },
+        "designation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Typbezeichnung, z. B. NA2XS2Y",
+          "title": "Designation"
+        },
+        "type": {
+          "const": "cable",
+          "default": "cable",
+          "description": "Komponententyp (Kabel)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Cable",
+      "type": "object"
+    },
+    "CircuitBreaker": {
+      "additionalProperties": false,
+      "description": "Leistungsschalter (DIN EN 60617-7: Schaltglied mit Kreuz am Festkontakt).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "state": {
+          "default": "closed",
+          "description": "Schaltzustand: open | closed",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "rating_a": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemessungsstrom in A",
+          "title": "Rating A"
+        },
+        "type": {
+          "const": "circuit_breaker",
+          "default": "circuit_breaker",
+          "description": "Komponententyp (Leistungsschalter)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "CircuitBreaker",
+      "type": "object"
+    },
+    "Connection": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "description": "ID des Startknotens (oder einer Template-Instanz)",
+          "title": "From",
+          "type": "string"
+        },
+        "to": {
+          "description": "ID des Zielknotens (oder einer Template-Instanz)",
+          "title": "To",
+          "type": "string"
+        },
+        "allow_loop": {
+          "default": false,
+          "description": "Diese Verbindung darf bewusst einen Ring schließen",
+          "title": "Allow Loop",
+          "type": "boolean"
+        },
+        "via": {
+          "description": "Elemente in Reihe auf der Verbindung (von from nach to)",
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "battery": "#/$defs/Battery",
+                "busbar": "#/$defs/Busbar",
+                "cable": "#/$defs/Cable",
+                "circuit_breaker": "#/$defs/CircuitBreaker",
+                "ev_charger": "#/$defs/EVCharger",
+                "fuse": "#/$defs/Fuse",
+                "generator": "#/$defs/Generator",
+                "grid": "#/$defs/Grid",
+                "grounding": "#/$defs/Grounding",
+                "inverter": "#/$defs/Inverter",
+                "line": "#/$defs/OverheadLine",
+                "load": "#/$defs/Load",
+                "meter": "#/$defs/Meter",
+                "motor": "#/$defs/Motor",
+                "pv_array": "#/$defs/PVArray",
+                "switch_disconnector": "#/$defs/SwitchDisconnector",
+                "transformer": "#/$defs/Transformer"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Battery"
+              },
+              {
+                "$ref": "#/$defs/Busbar"
+              },
+              {
+                "$ref": "#/$defs/Cable"
+              },
+              {
+                "$ref": "#/$defs/CircuitBreaker"
+              },
+              {
+                "$ref": "#/$defs/EVCharger"
+              },
+              {
+                "$ref": "#/$defs/Fuse"
+              },
+              {
+                "$ref": "#/$defs/Generator"
+              },
+              {
+                "$ref": "#/$defs/Grid"
+              },
+              {
+                "$ref": "#/$defs/Grounding"
+              },
+              {
+                "$ref": "#/$defs/Inverter"
+              },
+              {
+                "$ref": "#/$defs/OverheadLine"
+              },
+              {
+                "$ref": "#/$defs/Load"
+              },
+              {
+                "$ref": "#/$defs/Meter"
+              },
+              {
+                "$ref": "#/$defs/Motor"
+              },
+              {
+                "$ref": "#/$defs/PVArray"
+              },
+              {
+                "$ref": "#/$defs/SwitchDisconnector"
+              },
+              {
+                "$ref": "#/$defs/Transformer"
+              }
+            ]
+          },
+          "title": "Via",
+          "type": "array"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "title": "Connection",
+      "type": "object"
+    },
+    "DiagramMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "default": "",
+          "description": "Plantitel",
+          "title": "Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "default": "",
+          "title": "Subtitle",
+          "type": "string"
+        },
+        "project": {
+          "default": "",
+          "description": "Projekt (Schriftfeld)",
+          "title": "Project",
+          "type": "string"
+        },
+        "author": {
+          "default": "",
+          "description": "Bearbeiter (Schriftfeld)",
+          "title": "Author",
+          "type": "string"
+        },
+        "date": {
+          "default": "",
+          "description": "Datum (Schriftfeld)",
+          "title": "Date",
+          "type": "string"
+        },
+        "revision": {
+          "default": "",
+          "description": "Revisionsstand (Schriftfeld)",
+          "title": "Revision",
+          "type": "string"
+        },
+        "theme": {
+          "default": "din",
+          "description": "Darstellungsstil",
+          "enum": [
+            "din",
+            "simple"
+          ],
+          "title": "Theme",
+          "type": "string"
+        },
+        "bom": {
+          "default": false,
+          "description": "Stückliste (Betriebsmittelliste) neben dem Plan ausgeben",
+          "title": "Bom",
+          "type": "boolean"
+        },
+        "label_detail": {
+          "default": "full",
+          "description": "Umfang der Beschriftung am Symbol: full | short | id (nur Name bzw. ID)",
+          "enum": [
+            "full",
+            "short",
+            "id"
+          ],
+          "title": "Label Detail",
+          "type": "string"
+        },
+        "show_ids": {
+          "default": false,
+          "description": "IDs (Kennzeichen) am Symbol und in der Stückliste anzeigen",
+          "title": "Show Ids",
+          "type": "boolean"
+        },
+        "label_width_mm": {
+          "default": 32.0,
+          "description": "Maximale Breite der Beschriftung in mm, längere Texte werden umbrochen (0 = kein Umbruch)",
+          "minimum": 0,
+          "title": "Label Width Mm",
+          "type": "number"
+        },
+        "paper": {
+          "default": "auto",
+          "description": "Blattformat: auto (kleinstes passendes aus A5/A4/A3) | A5 | A4 | A3 | none (Blatt so groß wie der Plan)",
+          "enum": [
+            "auto",
+            "A5",
+            "A4",
+            "A3",
+            "none"
+          ],
+          "title": "Paper",
+          "type": "string"
+        },
+        "orientation": {
+          "default": "auto",
+          "description": "Ausrichtung des Blatts: auto | landscape (quer) | portrait (hoch)",
+          "enum": [
+            "auto",
+            "landscape",
+            "portrait"
+          ],
+          "title": "Orientation",
+          "type": "string"
+        }
+      },
+      "title": "DiagramMeta",
+      "type": "object"
+    },
+    "EVCharger": {
+      "additionalProperties": false,
+      "description": "Ladeeinrichtung für Elektrofahrzeuge (Wallbox / Ladesäule).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kw": {
+          "description": "Ladeleistung je Ladepunkt in kW",
+          "exclusiveMinimum": 0,
+          "title": "Kw",
+          "type": "number"
+        },
+        "points": {
+          "default": 1,
+          "description": "Anzahl Ladepunkte",
+          "minimum": 1,
+          "title": "Points",
+          "type": "integer"
+        },
+        "type": {
+          "const": "ev_charger",
+          "default": "ev_charger",
+          "description": "Komponententyp (Ladeeinrichtung (Wallbox))",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kw"
+      ],
+      "title": "EVCharger",
+      "type": "object"
+    },
+    "Fuse": {
+      "additionalProperties": false,
+      "description": "Sicherung (Rechteck mit durchgehender Linie). state: open = Einsatz gezogen.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "state": {
+          "default": "closed",
+          "description": "Schaltzustand: open | closed",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "rating_a": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemessungsstrom in A",
+          "title": "Rating A"
+        },
+        "fuse_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bauart / Betriebsklasse, z. B. 'NH2 gG'",
+          "title": "Fuse Type"
+        },
+        "type": {
+          "const": "fuse",
+          "default": "fuse",
+          "description": "Komponententyp (Sicherung)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Fuse",
+      "type": "object"
+    },
+    "Generator": {
+      "additionalProperties": false,
+      "description": "Synchron-/Asynchrongenerator (z. B. BHKW, Notstrom, Wind).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kva": {
+          "description": "Bemessungsleistung in kVA",
+          "exclusiveMinimum": 0,
+          "title": "Kva",
+          "type": "number"
+        },
+        "gen_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Art, z. B. BHKW, Diesel, Wind",
+          "title": "Gen Type"
+        },
+        "type": {
+          "const": "generator",
+          "default": "generator",
+          "description": "Komponententyp (Generator)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kva"
+      ],
+      "title": "Generator",
+      "type": "object"
+    },
+    "Grid": {
+      "additionalProperties": false,
+      "description": "Netz / Netzanschlusspunkt: Einspeisung aus dem vorgelagerten Netz.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "voltage_kv": {
+          "description": "Nennspannung in kV",
+          "exclusiveMinimum": 0,
+          "title": "Voltage Kv",
+          "type": "number"
+        },
+        "sk_mva": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Kurzschlussleistung S''k in MVA",
+          "title": "Sk Mva"
+        },
+        "type": {
+          "const": "grid",
+          "default": "grid",
+          "description": "Komponententyp (Netz / Netzanschlusspunkt)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "voltage_kv"
+      ],
+      "title": "Grid",
+      "type": "object"
+    },
+    "Grounding": {
+      "additionalProperties": false,
+      "description": "Erdung (DIN EN 60617-2).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Netzsystem / Erdungsart, z. B. TN-C-S",
+          "title": "System"
+        },
+        "resistance_ohm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Erdungswiderstand in Ohm",
+          "title": "Resistance Ohm"
+        },
+        "type": {
+          "const": "grounding",
+          "default": "grounding",
+          "description": "Komponententyp (Erdung)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Grounding",
+      "type": "object"
+    },
+    "Inverter": {
+      "additionalProperties": false,
+      "description": "Wechselrichter: AC-Seite oben (Netz), DC-Seite unten (PV / DC-Speicher).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kva": {
+          "description": "Bemessungsleistung je Gerät in kVA",
+          "exclusiveMinimum": 0,
+          "title": "Kva",
+          "type": "number"
+        },
+        "inverter_type": {
+          "default": "string",
+          "description": "Bauart: string | central (zentral) | hybrid",
+          "enum": [
+            "string",
+            "central",
+            "hybrid"
+          ],
+          "title": "Inverter Type",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "description": "Anzahl gleicher Geräte (als ein Symbol dargestellt)",
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "type": {
+          "const": "inverter",
+          "default": "inverter",
+          "description": "Komponententyp (Wechselrichter)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kva"
+      ],
+      "title": "Inverter",
+      "type": "object"
+    },
+    "Load": {
+      "additionalProperties": false,
+      "description": "Verbraucher / Last (Pfeil).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kw": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Wirkleistung in kW",
+          "title": "Kw"
+        },
+        "cos_phi": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Leistungsfaktor",
+          "title": "Cos Phi"
+        },
+        "type": {
+          "const": "load",
+          "default": "load",
+          "description": "Komponententyp (Verbraucher)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Load",
+      "type": "object"
+    },
+    "Meter": {
+      "additionalProperties": false,
+      "description": "Elektrizitätszähler (Wattstundenzähler) mit Zählrichtung.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "direction": {
+          "default": "bidirectional",
+          "description": "Zählrichtung: import (Bezug) | export (Einspeisung) | bidirectional",
+          "enum": [
+            "import",
+            "export",
+            "bidirectional"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Zählernummer / Messlokation",
+          "title": "Number"
+        },
+        "type": {
+          "const": "meter",
+          "default": "meter",
+          "description": "Komponententyp (Zähler)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Meter",
+      "type": "object"
+    },
+    "Motor": {
+      "additionalProperties": false,
+      "description": "Drehstrommotor.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kw": {
+          "description": "Bemessungsleistung in kW",
+          "exclusiveMinimum": 0,
+          "title": "Kw",
+          "type": "number"
+        },
+        "starter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anlaufart, z. B. DOL, Stern-Dreieck, FU",
+          "title": "Starter"
+        },
+        "type": {
+          "const": "motor",
+          "default": "motor",
+          "description": "Komponententyp (Motor)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kw"
+      ],
+      "title": "Motor",
+      "type": "object"
+    },
+    "OverheadLine": {
+      "additionalProperties": false,
+      "description": "Freileitung (Leitung mit Mastsymbol).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "length_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Länge in m",
+          "title": "Length M"
+        },
+        "cross_section_mm2": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Leiterquerschnitt in mm²",
+          "title": "Cross Section Mm2"
+        },
+        "conductors": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Aderzahl-Präfix, z. B. '3×1×' oder '4×'",
+          "title": "Conductors"
+        },
+        "designation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Typbezeichnung, z. B. NA2XS2Y",
+          "title": "Designation"
+        },
+        "type": {
+          "const": "line",
+          "default": "line",
+          "description": "Komponententyp (Freileitung)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "OverheadLine",
+      "type": "object"
+    },
+    "PVArray": {
+      "additionalProperties": false,
+      "description": "PV-Generator (Modulfeld), DC-seitig an einen Wechselrichter angeschlossen.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "kwp": {
+          "description": "Nennleistung in kWp",
+          "exclusiveMinimum": 0,
+          "title": "Kwp",
+          "type": "number"
+        },
+        "strings": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzahl Strings",
+          "title": "Strings"
+        },
+        "modules": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzahl Module",
+          "title": "Modules"
+        },
+        "type": {
+          "const": "pv_array",
+          "default": "pv_array",
+          "description": "Komponententyp (PV-Generator)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kwp"
+      ],
+      "title": "PVArray",
+      "type": "object"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "description": "Manuelle Position (Symbolmitte) in mm, relativ zur linken oberen Ecke des Planinhalts.",
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "SwitchDisconnector": {
+      "additionalProperties": false,
+      "description": "Lasttrennschalter (Trennstrich und Lastschalt-Kreis am Festkontakt).",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "state": {
+          "default": "closed",
+          "description": "Schaltzustand: open | closed",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "rating_a": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemessungsstrom in A",
+          "title": "Rating A"
+        },
+        "type": {
+          "const": "switch_disconnector",
+          "default": "switch_disconnector",
+          "description": "Komponententyp (Lasttrennschalter)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "SwitchDisconnector",
+      "type": "object"
+    },
+    "TemplateDef": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "params": {
+          "additionalProperties": true,
+          "description": "Parameter mit Vorgabewert (null = Pflicht)",
+          "title": "Params",
+          "type": "object"
+        },
+        "entry": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Lokale ID des Eintrittsknotens (Vorgabe: erster Knoten)",
+          "title": "Entry"
+        },
+        "nodes": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "connections": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Connections",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nodes"
+      ],
+      "title": "TemplateDef",
+      "type": "object"
+    },
+    "TemplateInstance": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Instanz-ID, Präfix der internen Knoten",
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "template": {
+          "description": "Name des Templates",
+          "title": "Template",
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": true,
+          "title": "Params",
+          "type": "object"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "template"
+      ],
+      "title": "TemplateInstance",
+      "type": "object"
+    },
+    "Transformer": {
+      "additionalProperties": false,
+      "description": "Zweiwicklungstransformator.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eindeutige Kennung (Betriebsmittelkennzeichen). Bei via-Elementen optional.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Anzeigename am Symbol (fett). Die id bleibt intern und wird nur mit diagram.show_ids angezeigt.",
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Freitext-Bezeichnung, wird am Symbol angezeigt.",
+          "title": "Label"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: Sortierschlüssel unter Geschwisterabgängen (kleiner = weiter links).",
+          "title": "Order"
+        },
+        "pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Layout-Hinweis: feste Position der Symbolmitte in mm (verschiebt den Teilbaum mit)."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Bemerkung, erscheint in der Stückliste.",
+          "title": "Note"
+        },
+        "rating_kva": {
+          "description": "Bemessungsleistung Sn in kVA",
+          "exclusiveMinimum": 0,
+          "title": "Rating Kva",
+          "type": "number"
+        },
+        "ratio": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Spannungsverhältnis, z. B. '20/0.4 kV'",
+          "title": "Ratio"
+        },
+        "hv_kv": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Oberspannung in kV (alternativ zu ratio)",
+          "title": "Hv Kv"
+        },
+        "lv_kv": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Unterspannung in kV (alternativ zu ratio)",
+          "title": "Lv Kv"
+        },
+        "uk_percent": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 100,
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Kurzschlussspannung uk in %",
+          "title": "Uk Percent"
+        },
+        "vector_group": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Schaltgruppe, z. B. Dyn5",
+          "title": "Vector Group"
+        },
+        "type": {
+          "const": "transformer",
+          "default": "transformer",
+          "description": "Komponententyp (Transformator)",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rating_kva"
+      ],
+      "title": "Transformer",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "diagram": {
+      "$ref": "#/$defs/DiagramMeta"
+    },
+    "nodes": {
+      "description": "Knoten oder Template-Instanzen",
+      "items": {
+        "anyOf": [
+          {
+            "discriminator": {
+              "mapping": {
+                "battery": "#/$defs/Battery",
+                "busbar": "#/$defs/Busbar",
+                "cable": "#/$defs/Cable",
+                "circuit_breaker": "#/$defs/CircuitBreaker",
+                "ev_charger": "#/$defs/EVCharger",
+                "fuse": "#/$defs/Fuse",
+                "generator": "#/$defs/Generator",
+                "grid": "#/$defs/Grid",
+                "grounding": "#/$defs/Grounding",
+                "inverter": "#/$defs/Inverter",
+                "line": "#/$defs/OverheadLine",
+                "load": "#/$defs/Load",
+                "meter": "#/$defs/Meter",
+                "motor": "#/$defs/Motor",
+                "pv_array": "#/$defs/PVArray",
+                "switch_disconnector": "#/$defs/SwitchDisconnector",
+                "transformer": "#/$defs/Transformer"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Battery"
+              },
+              {
+                "$ref": "#/$defs/Busbar"
+              },
+              {
+                "$ref": "#/$defs/Cable"
+              },
+              {
+                "$ref": "#/$defs/CircuitBreaker"
+              },
+              {
+                "$ref": "#/$defs/EVCharger"
+              },
+              {
+                "$ref": "#/$defs/Fuse"
+              },
+              {
+                "$ref": "#/$defs/Generator"
+              },
+              {
+                "$ref": "#/$defs/Grid"
+              },
+              {
+                "$ref": "#/$defs/Grounding"
+              },
+              {
+                "$ref": "#/$defs/Inverter"
+              },
+              {
+                "$ref": "#/$defs/OverheadLine"
+              },
+              {
+                "$ref": "#/$defs/Load"
+              },
+              {
+                "$ref": "#/$defs/Meter"
+              },
+              {
+                "$ref": "#/$defs/Motor"
+              },
+              {
+                "$ref": "#/$defs/PVArray"
+              },
+              {
+                "$ref": "#/$defs/SwitchDisconnector"
+              },
+              {
+                "$ref": "#/$defs/Transformer"
+              }
+            ]
+          },
+          {
+            "$ref": "#/$defs/TemplateInstance"
+          }
+        ]
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "connections": {
+      "description": "Verbindungen (Graph-Kanten)",
+      "items": {
+        "$ref": "#/$defs/Connection"
+      },
+      "title": "Connections",
+      "type": "array"
+    },
+    "templates": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TemplateDef"
+      },
+      "description": "Wiederverwendbare Teilschaltungen",
+      "title": "Templates",
+      "type": "object"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nodes"
+  ],
+  "title": "sld – Einlinienschaltplan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

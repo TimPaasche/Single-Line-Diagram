@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=../sld.schema.json
+# Beispiel 3: PV-Park mit zwei Transformatoren, NS-Bus-Kupplung (normal offen),
+# Speicher und wiederverwendbarem Template für die Wechselrichter-Abgänge.
+diagram:
+  title: "PV-Park 2,1 MWp mit Speicher"
+  project: "Beispiel 3 – Freiflächenanlage"
+  author: "sld"
+  revision: "B"
+  theme: din
+  bom: true
+
+templates:
+  pv_feeder:
+    description: "Wechselrichter mit PV-Generator"
+    params: {kwp: null, kva: null, strings: 20}
+    entry: wr
+    nodes:
+      - {id: wr, type: inverter, name: "WR ${id}", kva: "${kva}", inverter_type: string}
+      - {id: pv, type: pv_array, name: "PV-Feld ${id}", kwp: "${kwp}", strings: "${strings}"}
+    connections:
+      - {from: wr, to: pv}
+
+nodes:
+  - {id: netz, type: grid, voltage_kv: 20, sk_mva: 300, label: "Netzanschlusspunkt"}
+  - {id: ms_bus, type: busbar, voltage_kv: 20, label: "Übergabestation"}
+  - {id: T1, name: "Trafo 1", type: transformer, rating_kva: 1600, ratio: "20/0.63 kV", uk_percent: 6, vector_group: Dyn11}
+  - {id: T2, name: "Trafo 2", type: transformer, rating_kva: 1600, ratio: "20/0.63 kV", uk_percent: 6, vector_group: Dyn11}
+  - {id: nsp_a, type: busbar, voltage_kv: 0.63, label: "NS-Verteilung A"}
+  - {id: nsp_b, type: busbar, label: "NS-Verteilung B"}   # Spannung wird über T2 abgeleitet
+
+  - {id: a1, template: pv_feeder, params: {kwp: 400, kva: 350}}
+  - {id: a2, template: pv_feeder, params: {kwp: 400, kva: 350}}
+  - {id: a3, template: pv_feeder, params: {kwp: 400, kva: 350}}
+  - {id: b1, template: pv_feeder, params: {kwp: 450, kva: 350, strings: 22}}
+  - {id: b2, template: pv_feeder, params: {kwp: 450, kva: 350, strings: 22}}
+
+  - {id: bat1, name: "Speicher", type: battery, kwh: 1000, kw: 500, coupling: ac, inverter_kva: 500, order: 0}
+  - {id: eb, type: load, kw: 25, label: "Eigenbedarf"}
+
+connections:
+  - from: netz
+    to: ms_bus
+    via:
+      - {type: switch_disconnector, id: Q01}
+      - {type: circuit_breaker, id: Q0}
+      - {type: meter, id: P0, direction: bidirectional, number: "DE000123E45"}
+  - {from: ms_bus, to: T1, via: [{type: circuit_breaker, id: Q11}]}
+  - {from: ms_bus, to: T2, via: [{type: circuit_breaker, id: Q12}]}
+  - {from: T1, to: nsp_a, via: [{type: circuit_breaker, id: Q21, rating_a: 2500}]}
+  - {from: T2, to: nsp_b, via: [{type: circuit_breaker, id: Q22, rating_a: 2500}]}
+
+  # Bus-Kupplung, normal offen -> schließt den Ring nicht
+  - {from: nsp_a, to: nsp_b, via: [{type: circuit_breaker, id: QK, state: open, rating_a: 1600}]}
+
+  - {from: nsp_a, to: a1, via: [{type: fuse, rating_a: 630}]}
+  - {from: nsp_a, to: a2, via: [{type: fuse, rating_a: 630}]}
+  - {from: nsp_a, to: a3, via: [{type: fuse, rating_a: 630}]}
+  - {from: nsp_a, to: eb, via: [{type: fuse, rating_a: 63}]}
+  - {from: nsp_b, to: bat1, via: [{type: circuit_breaker, rating_a: 800}]}
+  - {from: nsp_b, to: b1, via: [{type: fuse, rating_a: 630}]}
+  - {from: nsp_b, to: b2, via: [{type: fuse, rating_a: 630}]}

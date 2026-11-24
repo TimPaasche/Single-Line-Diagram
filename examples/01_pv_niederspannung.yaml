@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=../sld.schema.json
+# Beispiel 1: PV-Anlage direkt am Niederspannungs-Hausanschluss
+diagram:
+  title: "PV 30 kWp am Hausanschluss"
+  project: "Beispiel 1 – Einfamilienhaus"
+  author: "sld"
+  date: "2026-11-20"
+  revision: "A"
+  theme: din
+
+nodes:
+  - id: netz
+    type: grid
+    voltage_kv: 0.4
+    sk_mva: 8
+    label: "NS-Netz EVU"
+  - id: zs
+    type: busbar
+    voltage_kv: 0.4
+    label: "Zählerschrank"
+  - id: wr1
+    type: inverter
+    kva: 25
+    inverter_type: string
+  - id: pv1
+    type: pv_array
+    kwp: 30
+    strings: 3
+    modules: 72
+  - id: haus
+    type: load
+    kw: 12
+    label: "Haushalt"
+  - id: wb1
+    type: ev_charger
+    kw: 11
+    label: "Wallbox"
+  - id: pe
+    type: grounding
+    system: "TN-C-S"
+
+connections:
+  - from: netz
+    to: zs
+    via:
+      - {type: fuse, id: F0, fuse_type: "NH00 gG", rating_a: 63, label: "HAK"}
+      - {type: meter, id: P1, direction: bidirectional, label: "Zweirichtungszähler"}
+  - from: zs
+    to: wr1
+    via:
+      - {type: circuit_breaker, rating_a: 40}
+      - {type: cable, designation: "NYM-J", conductors: "5×", cross_section_mm2: 10, length_m: 18}
+  - from: wr1
+    to: pv1
+  - from: zs
+    to: haus
+    via: [{type: circuit_breaker, rating_a: 63}]
+  - from: zs
+    to: wb1
+    via: [{type: circuit_breaker, rating_a: 20}]
+  - from: zs
+    to: pe

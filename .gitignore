@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+out/
+/*.svg
+/*.png
+/*.pdf
+
+# IDE
+.idea/
+.vscode/

@@ -1,0 +1,142 @@
+{
+  "diagram": {
+    "title": "PV 500 kWp + Speicher am MS-Netz",
+    "project": "Beispiel 2 – Gewerbe",
+    "theme": "din"
+  },
+  "nodes": [
+    {
+      "id": "netz",
+      "type": "grid",
+      "voltage_kv": 20,
+      "sk_mva": 250,
+      "label": "EVU Mittelspannung"
+    },
+    {
+      "id": "ms_bus",
+      "type": "busbar",
+      "voltage_kv": 20,
+      "label": "Übergabestation"
+    },
+    {
+      "id": "t1",
+      "type": "transformer",
+      "rating_kva": 1250,
+      "ratio": "20/0.4 kV",
+      "uk_percent": 6,
+      "vector_group": "Dyn5"
+    },
+    {
+      "id": "nsp_bus",
+      "type": "busbar",
+      "voltage_kv": 0.4,
+      "label": "NSHV"
+    },
+    {
+      "id": "wr1",
+      "type": "inverter",
+      "kva": 500,
+      "inverter_type": "central"
+    },
+    {
+      "id": "pv1",
+      "type": "pv_array",
+      "kwp": 500,
+      "strings": 40
+    },
+    {
+      "id": "bat1",
+      "type": "battery",
+      "kwh": 1000,
+      "kw": 500,
+      "coupling": "ac",
+      "inverter_kva": 500
+    },
+    {
+      "id": "ev",
+      "type": "load",
+      "kw": 80,
+      "label": "Eigenbedarf"
+    }
+  ],
+  "connections": [
+    {
+      "from": "netz",
+      "to": "ms_bus",
+      "via": [
+        {
+          "type": "circuit_breaker",
+          "id": "Q1",
+          "state": "closed"
+        },
+        {
+          "type": "meter",
+          "id": "P1",
+          "direction": "bidirectional"
+        }
+      ]
+    },
+    {
+      "from": "ms_bus",
+      "to": "t1",
+      "via": [
+        {
+          "type": "circuit_breaker",
+          "id": "Q2"
+        },
+        {
+          "type": "cable",
+          "designation": "NA2XS2Y",
+          "conductors": "3×1×",
+          "cross_section_mm2": 150,
+          "length_m": 350
+        }
+      ]
+    },
+    {
+      "from": "t1",
+      "to": "nsp_bus",
+      "via": [
+        {
+          "type": "circuit_breaker",
+          "id": "Q3",
+          "rating_a": 2000
+        }
+      ]
+    },
+    {
+      "from": "nsp_bus",
+      "to": "wr1",
+      "via": [
+        {
+          "type": "fuse",
+          "rating_a": 800
+        }
+      ]
+    },
+    {
+      "from": "wr1",
+      "to": "pv1"
+    },
+    {
+      "from": "nsp_bus",
+      "to": "bat1",
+      "via": [
+        {
+          "type": "circuit_breaker",
+          "rating_a": 800
+        }
+      ]
+    },
+    {
+      "from": "nsp_bus",
+      "to": "ev",
+      "via": [
+        {
+          "type": "fuse",
+          "rating_a": 160
+        }
+      ]
+    }
+  ]
+}
